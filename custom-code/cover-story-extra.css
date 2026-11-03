@@ -1,0 +1,18 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+}
+
+::selection {
+  background: #111;
+  color: #fff;
+}
+
+*:focus-visible {
+  outline: 1px solid #111;
+  outline-offset: 3px;
+}

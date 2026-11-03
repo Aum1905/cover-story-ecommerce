@@ -1,0 +1,3093 @@
+{% liquid
+  assign nav_menu = section.settings.nav_menu
+  assign hero_image = section.settings.hero_image
+  assign hero_mobile_image = section.settings.hero_mobile_image
+%}
+
+<section id="cover-story-{{ section.id }}" class="cs-site">
+
+  <style>
+    #cover-story-{{ section.id }} {
+      --cs-black: #0b0b0b;
+      --cs-white: #ffffff;
+      --cs-grey: #717171;
+      --cs-light: #f5f5f3;
+      --cs-border: #e4e4e1;
+      --cs-radius: 0px;
+      --cs-max: 1440px;
+      color: var(--cs-black);
+      background: var(--cs-white);
+      overflow: hidden;
+    }
+
+    #cover-story-{{ section.id }} * {
+      box-sizing: border-box;
+    }
+
+    #cover-story-{{ section.id }} a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    #cover-story-{{ section.id }} img {
+      display: block;
+      width: 100%;
+    }
+
+    #cover-story-{{ section.id }} button,
+    #cover-story-{{ section.id }} input {
+      font: inherit;
+    }
+
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: transparent;
+      color: #fff;
+      transition:
+        background .35s ease,
+        color .35s ease,
+        box-shadow .35s ease;
+    }
+
+    #cover-story-{{ section.id }} .cs-header.scrolled {
+      background: rgba(255,255,255,.96);
+      color: var(--cs-black);
+      box-shadow: 0 1px 0 rgba(0,0,0,.08);
+      backdrop-filter: blur(12px);
+    }
+
+    #cover-story-{{ section.id }} .cs-header-inner {
+      max-width: var(--cs-max);
+      margin: 0 auto;
+      height: 84px;
+      padding: 0 28px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+    }
+
+    #cover-story-{{ section.id }} .cs-logo {
+      justify-self: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 170px;
+    }
+
+    #cover-story-{{ section.id }} .cs-logo img {
+      max-height: 46px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    #cover-story-{{ section.id }} .cs-logo-text {
+      font-size: 20px;
+      letter-spacing: .26em;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    #cover-story-{{ section.id }} .cs-nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      justify-self: start;
+    }
+
+    #cover-story-{{ section.id }} .cs-nav-item {
+      position: relative;
+    }
+
+    #cover-story-{{ section.id }} .cs-nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      line-height: 1;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 20px 0;
+      white-space: nowrap;
+    }
+
+    #cover-story-{{ section.id }} .cs-nav-chevron {
+      width: 6px;
+      height: 6px;
+      border-right: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      transform: rotate(45deg) translateY(-2px);
+      transition: transform .25s ease;
+    }
+
+    #cover-story-{{ section.id }} .cs-nav-item:hover .cs-nav-chevron {
+      transform: rotate(225deg) translateY(-1px);
+    }
+
+    #cover-story-{{ section.id }} .cs-mega {
+      position: absolute;
+      left: 0;
+      top: 100%;
+      width: 300px;
+      background: #fff;
+      color: var(--cs-black);
+      padding: 28px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: .25s ease;
+      box-shadow: 0 16px 40px rgba(0,0,0,.10);
+    }
+
+    #cover-story-{{ section.id }} .cs-nav-item:hover .cs-mega {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    #cover-story-{{ section.id }} .cs-mega-grid {
+      display: grid;
+      gap: 7px;
+    }
+
+    #cover-story-{{ section.id }} .cs-mega a {
+      font-size: 12px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      padding: 8px 0;
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s ease;
+    }
+
+    #cover-story-{{ section.id }} .cs-mega a:hover {
+      border-color: #111;
+    }
+
+    #cover-story-{{ section.id }} .cs-header-actions {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    #cover-story-{{ section.id }} .cs-icon-button {
+      position: relative;
+      width: 37px;
+      height: 37px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: currentColor;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+
+    #cover-story-{{ section.id }} .cs-icon {
+      width: 19px;
+      height: 19px;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      fill: none;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-count {
+      position: absolute;
+      top: -1px;
+      right: -2px;
+      min-width: 17px;
+      height: 17px;
+      padding: 0 4px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: currentColor;
+      color: #fff;
+      font-size: 9px;
+      line-height: 1;
+    }
+
+    #cover-story-{{ section.id }} .scrolled .cs-cart-count {
+      background: #111;
+      color: #fff;
+    }
+
+    #cover-story-{{ section.id }} .cs-mobile-toggle {
+      display: none;
+    }
+
+    /* =========================================================
+       MOBILE NAV
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-mobile-menu {
+      position: fixed;
+      z-index: 999;
+      inset: 0;
+      background: #fff;
+      color: #111;
+      transform: translateX(-100%);
+      transition: transform .4s cubic-bezier(.22,.61,.36,1);
+      padding: 108px 24px 32px;
+      overflow-y: auto;
+    }
+
+    #cover-story-{{ section.id }} .cs-mobile-menu.open {
+      transform: translateX(0);
+    }
+
+    #cover-story-{{ section.id }} .cs-mobile-menu-list {
+      display: grid;
+      gap: 5px;
+    }
+
+    #cover-story-{{ section.id }} .cs-mobile-menu-list a {
+      display: block;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 18px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       HERO
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #cover-story-{{ section.id }} .cs-hero-media,
+    #cover-story-{{ section.id }} .cs-hero-media img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #cover-story-{{ section.id }} .cs-hero-media img {
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1.04);
+      animation: csHeroZoom 12s ease-out forwards;
+    }
+
+    #cover-story-{{ section.id }} .cs-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(0,0,0,.12) 0%,
+          rgba(0,0,0,.20) 42%,
+          rgba(0,0,0,.68) 100%
+        );
+    }
+
+    #cover-story-{{ section.id }} .cs-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: var(--cs-max);
+      width: 100%;
+      margin: 0 auto;
+      padding: 150px 28px 70px;
+      color: #fff;
+    }
+
+    #cover-story-{{ section.id }} .cs-eyebrow {
+      font-size: 11px;
+      letter-spacing: .20em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      opacity: .82;
+    }
+
+    #cover-story-{{ section.id }} .cs-hero-title {
+      max-width: 920px;
+      margin: 0;
+      font-size: clamp(44px, 7.5vw, 105px);
+      line-height: .94;
+      letter-spacing: -.055em;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    #cover-story-{{ section.id }} .cs-hero-text {
+      max-width: 600px;
+      margin: 24px 0 0;
+      font-size: 15px;
+      line-height: 1.7;
+      opacity: .9;
+    }
+
+    #cover-story-{{ section.id }} .cs-hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    #cover-story-{{ section.id }} .cs-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 47px;
+      padding: 0 24px;
+      border: 1px solid currentColor;
+      background: transparent;
+      color: inherit;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      transition:
+        background .25s ease,
+        color .25s ease,
+        transform .25s ease;
+    }
+
+    #cover-story-{{ section.id }} .cs-button:hover {
+      background: #fff;
+      color: #111;
+      transform: translateY(-2px);
+    }
+
+    #cover-story-{{ section.id }} .cs-scroll-indicator {
+      position: absolute;
+      right: 28px;
+      bottom: 35px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #fff;
+      font-size: 9px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    #cover-story-{{ section.id }} .cs-scroll-line {
+      width: 52px;
+      height: 1px;
+      background: #fff;
+      animation: csScrollLine 2s ease-in-out infinite;
+    }
+
+    /* =========================================================
+       MARQUEE
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-marquee {
+      overflow: hidden;
+      border-bottom: 1px solid var(--cs-border);
+      border-top: 1px solid var(--cs-border);
+      background: #fff;
+    }
+
+    #cover-story-{{ section.id }} .cs-marquee-track {
+      display: flex;
+      width: max-content;
+      animation: csMarquee 22s linear infinite;
+    }
+
+    #cover-story-{{ section.id }} .cs-marquee-item {
+      white-space: nowrap;
+      padding: 17px 26px;
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    #cover-story-{{ section.id }} .cs-marquee-dot {
+      margin: 0 15px;
+    }
+
+    /* =========================================================
+       GENERIC SECTION
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-section {
+      max-width: var(--cs-max);
+      margin: 0 auto;
+      padding: 100px 28px;
+    }
+
+    #cover-story-{{ section.id }} .cs-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 25px;
+      margin-bottom: 38px;
+    }
+
+    #cover-story-{{ section.id }} .cs-section-kicker {
+      margin-bottom: 10px;
+      font-size: 10px;
+      letter-spacing: .20em;
+      text-transform: uppercase;
+      color: var(--cs-grey);
+    }
+
+    #cover-story-{{ section.id }} .cs-section-title {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: .98;
+      letter-spacing: -.045em;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    #cover-story-{{ section.id }} .cs-section-link {
+      flex-shrink: 0;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      border-bottom: 1px solid #111;
+      padding-bottom: 5px;
+    }
+
+    /* =========================================================
+       CATEGORY GRID
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-category-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    #cover-story-{{ section.id }} .cs-category {
+      position: relative;
+      min-height: 540px;
+      overflow: hidden;
+      background: #eee;
+    }
+
+    #cover-story-{{ section.id }} .cs-category img {
+      height: 100%;
+      min-height: 540px;
+      object-fit: cover;
+      transition: transform .7s cubic-bezier(.22,.61,.36,1);
+    }
+
+    #cover-story-{{ section.id }} .cs-category:hover img {
+      transform: scale(1.06);
+    }
+
+    #cover-story-{{ section.id }} .cs-category-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.67) 100%);
+    }
+
+    #cover-story-{{ section.id }} .cs-category-content {
+      position: absolute;
+      left: 25px;
+      right: 25px;
+      bottom: 25px;
+      color: #fff;
+    }
+
+    #cover-story-{{ section.id }} .cs-category-label {
+      margin: 0 0 7px;
+      font-size: 25px;
+      letter-spacing: -.02em;
+      text-transform: uppercase;
+    }
+
+    #cover-story-{{ section.id }} .cs-category-sub {
+      margin: 0 0 15px;
+      font-size: 12px;
+      opacity: .8;
+    }
+
+    #cover-story-{{ section.id }} .cs-category-link {
+      display: inline-flex;
+      border-bottom: 1px solid rgba(255,255,255,.85);
+      padding-bottom: 4px;
+      font-size: 10px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       PRODUCT CAROUSEL
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-product-row {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(245px, 1fr);
+      grid-template-rows: 1fr;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      padding-bottom: 8px;
+    }
+
+    #cover-story-{{ section.id }} .cs-product-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    #cover-story-{{ section.id }} .cs-product {
+      position: relative;
+      min-width: 0;
+      scroll-snap-align: start;
+    }
+
+    #cover-story-{{ section.id }} .cs-product-media {
+      position: relative;
+      overflow: hidden;
+      background: #f3f3f1;
+      aspect-ratio: 1 / 1.18;
+    }
+
+    #cover-story-{{ section.id }} .cs-product-media img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition:
+        opacity .4s ease,
+        transform .6s cubic-bezier(.22,.61,.36,1);
+    }
+
+    #cover-story-{{ section.id }} .cs-product-image-main {
+      opacity: 1;
+    }
+
+    #cover-story-{{ section.id }} .cs-product-image-second {
+      opacity: 0;
+    }
+
+    #cover-story-{{ section.id }} .cs-product:hover .cs-product-image-main {
+      opacity: 0;
+    }
+
+    #cover-story-{{ section.id }} .cs-product:hover .cs-product-image-second {
+      opacity: 1;
+    }
+
+    #cover-story-{{ section.id }} .cs-product:hover .cs-product-media img {
+      transform: scale(1.035);
+    }
+
+    #cover-story-{{ section.id }} .cs-product-badge {
+      position: absolute;
+      z-index: 3;
+      top: 12px;
+      left: 12px;
+      padding: 7px 9px;
+      background: #fff;
+      font-size: 8px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    #cover-story-{{ section.id }} .cs-quick-add {
+      position: absolute;
+      z-index: 4;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      opacity: 0;
+      transform: translateY(7px);
+      transition: .25s ease;
+    }
+
+    #cover-story-{{ section.id }} .cs-product:hover .cs-quick-add {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #cover-story-{{ section.id }} .cs-quick-add button,
+    #cover-story-{{ section.id }} .cs-quick-add a {
+      width: 100%;
+      min-height: 45px;
+      border: 1px solid #111;
+      background: #111;
+      color: #fff;
+      cursor: pointer;
+      font-size: 9px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      display: grid;
+      place-items: center;
+    }
+
+    #cover-story-{{ section.id }} .cs-product-info {
+      padding-top: 13px;
+    }
+
+    #cover-story-{{ section.id }} .cs-product-title {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+
+    #cover-story-{{ section.id }} .cs-product-price {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      align-items: center;
+      font-size: 11px;
+    }
+
+    #cover-story-{{ section.id }} .cs-price-sale {
+      color: #111;
+    }
+
+    #cover-story-{{ section.id }} .cs-price-old {
+      color: #8a8a8a;
+      text-decoration: line-through;
+    }
+
+    #cover-story-{{ section.id }} .cs-sold-out {
+      margin-top: 5px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: #999;
+    }
+
+    /* =========================================================
+       DARK EDITORIAL
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-editorial {
+      background: #111;
+      color: #fff;
+    }
+
+    #cover-story-{{ section.id }} .cs-editorial-inner {
+      max-width: var(--cs-max);
+      margin: 0 auto;
+      padding: 100px 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 55px;
+      align-items: center;
+    }
+
+    #cover-story-{{ section.id }} .cs-editorial-image {
+      overflow: hidden;
+      aspect-ratio: 1 / .92;
+    }
+
+    #cover-story-{{ section.id }} .cs-editorial-image img {
+      height: 100%;
+      object-fit: cover;
+      transition: transform .8s ease;
+    }
+
+    #cover-story-{{ section.id }} .cs-editorial:hover .cs-editorial-image img {
+      transform: scale(1.04);
+    }
+
+    #cover-story-{{ section.id }} .cs-editorial-copy {
+      max-width: 550px;
+    }
+
+    #cover-story-{{ section.id }} .cs-editorial-copy h2 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 64px);
+      font-weight: 500;
+      line-height: .96;
+      letter-spacing: -.04em;
+      text-transform: uppercase;
+    }
+
+    #cover-story-{{ section.id }} .cs-editorial-copy p {
+      margin: 23px 0 0;
+      max-width: 520px;
+      color: rgba(255,255,255,.72);
+      line-height: 1.75;
+      font-size: 14px;
+    }
+
+    #cover-story-{{ section.id }} .cs-editorial-copy .cs-button {
+      margin-top: 27px;
+    }
+
+    /* =========================================================
+       COLLECTION STRIP
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    #cover-story-{{ section.id }} .cs-mini-card {
+      position: relative;
+      overflow: hidden;
+      background: #eee;
+      aspect-ratio: 1 / 1;
+    }
+
+    #cover-story-{{ section.id }} .cs-mini-card img {
+      height: 100%;
+      object-fit: cover;
+      transition: transform .7s ease;
+    }
+
+    #cover-story-{{ section.id }} .cs-mini-card:hover img {
+      transform: scale(1.07);
+    }
+
+    #cover-story-{{ section.id }} .cs-mini-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      padding: 19px;
+      color: #fff;
+      background: linear-gradient(180deg, transparent 35%, rgba(0,0,0,.64));
+    }
+
+    #cover-story-{{ section.id }} .cs-mini-overlay span {
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       TRUST
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-trust {
+      border-top: 1px solid var(--cs-border);
+      border-bottom: 1px solid var(--cs-border);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      max-width: var(--cs-max);
+      margin: 0 auto;
+    }
+
+    #cover-story-{{ section.id }} .cs-trust-item {
+      padding: 32px 20px;
+      text-align: center;
+      border-right: 1px solid var(--cs-border);
+    }
+
+    #cover-story-{{ section.id }} .cs-trust-item:last-child {
+      border-right: 0;
+    }
+
+    #cover-story-{{ section.id }} .cs-trust-title {
+      margin: 0;
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    #cover-story-{{ section.id }} .cs-trust-text {
+      margin: 7px 0 0;
+      font-size: 11px;
+      color: var(--cs-grey);
+    }
+
+    /* =========================================================
+       STORES
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-store-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    #cover-story-{{ section.id }} .cs-store {
+      background: #f3f3f1;
+    }
+
+    #cover-story-{{ section.id }} .cs-store-image {
+      aspect-ratio: 1.25 / 1;
+      overflow: hidden;
+    }
+
+    #cover-story-{{ section.id }} .cs-store-image img {
+      height: 100%;
+      object-fit: cover;
+      transition: transform .7s ease;
+    }
+
+    #cover-story-{{ section.id }} .cs-store:hover img {
+      transform: scale(1.04);
+    }
+
+    #cover-story-{{ section.id }} .cs-store-content {
+      padding: 20px;
+    }
+
+    #cover-story-{{ section.id }} .cs-store-name {
+      margin: 0;
+      font-size: 17px;
+      text-transform: uppercase;
+      letter-spacing: -.01em;
+    }
+
+    #cover-story-{{ section.id }} .cs-store-address {
+      margin: 9px 0 17px;
+      color: #666;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    #cover-story-{{ section.id }} .cs-store-link {
+      font-size: 9px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      border-bottom: 1px solid #111;
+      padding-bottom: 4px;
+    }
+
+    /* =========================================================
+       ABOUT
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-about {
+      background: #f3f3f1;
+    }
+
+    #cover-story-{{ section.id }} .cs-about-inner {
+      max-width: var(--cs-max);
+      margin: 0 auto;
+      padding: 110px 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 65px;
+      align-items: center;
+    }
+
+    #cover-story-{{ section.id }} .cs-about-image {
+      aspect-ratio: 1 / .95;
+      overflow: hidden;
+    }
+
+    #cover-story-{{ section.id }} .cs-about-image img {
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #cover-story-{{ section.id }} .cs-about-copy h2 {
+      margin: 0;
+      font-size: clamp(35px, 5vw, 65px);
+      line-height: .95;
+      font-weight: 500;
+      letter-spacing: -.045em;
+      text-transform: uppercase;
+    }
+
+    #cover-story-{{ section.id }} .cs-about-copy p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #555;
+      max-width: 580px;
+      margin: 22px 0 0;
+    }
+
+    #cover-story-{{ section.id }} .cs-about-signature {
+      margin-top: 25px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       NEWSLETTER
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-newsletter {
+      max-width: var(--cs-max);
+      margin: 0 auto;
+      padding: 105px 28px;
+      text-align: center;
+    }
+
+    #cover-story-{{ section.id }} .cs-newsletter h2 {
+      margin: 0;
+      font-size: clamp(30px, 4.5vw, 58px);
+      font-weight: 500;
+      line-height: .97;
+      letter-spacing: -.04em;
+      text-transform: uppercase;
+    }
+
+    #cover-story-{{ section.id }} .cs-newsletter p {
+      margin: 17px auto 0;
+      max-width: 560px;
+      color: #666;
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    #cover-story-{{ section.id }} .cs-newsletter-form {
+      max-width: 530px;
+      margin: 30px auto 0;
+      display: flex;
+      border-bottom: 1px solid #111;
+    }
+
+    #cover-story-{{ section.id }} .cs-newsletter-form input {
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      padding: 14px 0;
+      color: #111;
+      font-size: 12px;
+    }
+
+    #cover-story-{{ section.id }} .cs-newsletter-form button {
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      padding: 0 0 0 15px;
+      font-size: 9px;
+      letter-spacing: .16em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-footer {
+      background: #111;
+      color: #fff;
+    }
+
+    #cover-story-{{ section.id }} .cs-footer-inner {
+      max-width: var(--cs-max);
+      margin: 0 auto;
+      padding: 75px 28px 30px;
+    }
+
+    #cover-story-{{ section.id }} .cs-footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 35px;
+      padding-bottom: 60px;
+    }
+
+    #cover-story-{{ section.id }} .cs-footer-logo {
+      font-size: 18px;
+      letter-spacing: .27em;
+      text-transform: uppercase;
+    }
+
+    #cover-story-{{ section.id }} .cs-footer-text {
+      color: rgba(255,255,255,.55);
+      max-width: 350px;
+      font-size: 12px;
+      line-height: 1.75;
+      margin-top: 16px;
+    }
+
+    #cover-story-{{ section.id }} .cs-footer-heading {
+      margin: 0 0 17px;
+      font-size: 9px;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.55);
+    }
+
+    #cover-story-{{ section.id }} .cs-footer-links {
+      display: grid;
+      gap: 9px;
+    }
+
+    #cover-story-{{ section.id }} .cs-footer-links a {
+      font-size: 12px;
+      color: #fff;
+      opacity: .84;
+      transition: opacity .2s ease;
+    }
+
+    #cover-story-{{ section.id }} .cs-footer-links a:hover {
+      opacity: 1;
+    }
+
+    #cover-story-{{ section.id }} .cs-footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: rgba(255,255,255,.45);
+      font-size: 9px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       CART DRAWER
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 1100;
+      opacity: 0;
+      visibility: hidden;
+      transition: .3s ease;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-drawer {
+      position: fixed;
+      z-index: 1101;
+      top: 0;
+      right: 0;
+      width: min(440px, 100%);
+      height: 100%;
+      background: #fff;
+      color: #111;
+      transform: translateX(100%);
+      transition: transform .4s cubic-bezier(.22,.61,.36,1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-drawer.open {
+      transform: translateX(0);
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-head {
+      min-height: 82px;
+      padding: 0 23px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-head h3 {
+      margin: 0;
+      font-size: 12px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-close {
+      background: transparent;
+      border: 0;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      font-size: 22px;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-item {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 13px;
+      padding-bottom: 17px;
+      margin-bottom: 17px;
+      border-bottom: 1px solid #eee;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-item img {
+      width: 78px;
+      height: 92px;
+      object-fit: cover;
+      background: #f3f3f1;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-item-name {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-item-meta {
+      margin-top: 6px;
+      font-size: 10px;
+      color: #777;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-footer {
+      border-top: 1px solid #eee;
+      padding: 18px 20px 23px;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-total {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    #cover-story-{{ section.id }} .cs-cart-checkout {
+      width: 100%;
+      min-height: 48px;
+      display: grid;
+      place-items: center;
+      background: #111;
+      color: #fff;
+      border: 0;
+      font-size: 9px;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       TOAST
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-toast {
+      position: fixed;
+      z-index: 1200;
+      left: 50%;
+      bottom: 22px;
+      transform: translate(-50%, 20px);
+      background: #111;
+      color: #fff;
+      padding: 13px 18px;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: 0;
+      visibility: hidden;
+      transition: .3s ease;
+    }
+
+    #cover-story-{{ section.id }} .cs-toast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* =========================================================
+       REVEAL ANIMATION
+    ========================================================= */
+
+    #cover-story-{{ section.id }} .cs-reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition:
+        opacity .8s ease,
+        transform .8s cubic-bezier(.22,.61,.36,1);
+    }
+
+    #cover-story-{{ section.id }} .cs-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =========================================================
+       ANIMATIONS
+    ========================================================= */
+
+    @keyframes csHeroZoom {
+      from { transform: scale(1.04); }
+      to { transform: scale(1); }
+    }
+
+    @keyframes csScrollLine {
+      0%,100% {
+        opacity: .4;
+        transform: scaleX(.5);
+        transform-origin: right;
+      }
+      50% {
+        opacity: 1;
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+    }
+
+    @keyframes csMarquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* =========================================================
+       TABLET
+    ========================================================= */
+
+    @media (max-width: 1100px) {
+      #cover-story-{{ section.id }} .cs-nav {
+        gap: 14px;
+      }
+
+      #cover-story-{{ section.id }} .cs-nav-link {
+        font-size: 9px;
+      }
+
+      #cover-story-{{ section.id }} .cs-category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      #cover-story-{{ section.id }} .cs-category:last-child {
+        grid-column: span 2;
+      }
+
+      #cover-story-{{ section.id }} .cs-footer-top {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width: 749px) {
+
+      #cover-story-{{ section.id }} .cs-header-inner {
+        height: 70px;
+        padding: 0 17px;
+        grid-template-columns: 1fr auto 1fr;
+      }
+
+      #cover-story-{{ section.id }} .cs-nav {
+        display: none;
+      }
+
+      #cover-story-{{ section.id }} .cs-mobile-toggle {
+        display: grid;
+        justify-self: start;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        color: currentColor;
+      }
+
+      #cover-story-{{ section.id }} .cs-mobile-toggle span,
+      #cover-story-{{ section.id }} .cs-mobile-toggle span:before,
+      #cover-story-{{ section.id }} .cs-mobile-toggle span:after {
+        content: "";
+        display: block;
+        width: 19px;
+        height: 1px;
+        background: currentColor;
+        position: relative;
+      }
+
+      #cover-story-{{ section.id }} .cs-mobile-toggle span:before {
+        position: absolute;
+        top: -6px;
+      }
+
+      #cover-story-{{ section.id }} .cs-mobile-toggle span:after {
+        position: absolute;
+        top: 6px;
+      }
+
+      #cover-story-{{ section.id }} .cs-logo {
+        max-width: 135px;
+      }
+
+      #cover-story-{{ section.id }} .cs-logo img {
+        max-height: 35px;
+      }
+
+      #cover-story-{{ section.id }} .cs-logo-text {
+        font-size: 14px;
+        letter-spacing: .22em;
+      }
+
+      #cover-story-{{ section.id }} .cs-header-actions {
+        gap: 2px;
+      }
+
+      #cover-story-{{ section.id }} .cs-header-actions .cs-search-button {
+        display: none;
+      }
+
+      #cover-story-{{ section.id }} .cs-icon-button {
+        width: 33px;
+        height: 33px;
+      }
+
+      #cover-story-{{ section.id }} .cs-hero {
+        min-height: 88svh;
+      }
+
+      #cover-story-{{ section.id }} .cs-hero-content {
+        padding: 125px 18px 50px;
+      }
+
+      #cover-story-{{ section.id }} .cs-hero-title {
+        font-size: clamp(39px, 12vw, 70px);
+      }
+
+      #cover-story-{{ section.id }} .cs-hero-text {
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      #cover-story-{{ section.id }} .cs-scroll-indicator {
+        display: none;
+      }
+
+      #cover-story-{{ section.id }} .cs-section {
+        padding: 70px 18px;
+      }
+
+      #cover-story-{{ section.id }} .cs-section-header {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 28px;
+      }
+
+      #cover-story-{{ section.id }} .cs-section-title {
+        font-size: 31px;
+      }
+
+      #cover-story-{{ section.id }} .cs-category-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      #cover-story-{{ section.id }} .cs-category,
+      #cover-story-{{ section.id }} .cs-category:last-child {
+        min-height: 420px;
+        grid-column: auto;
+      }
+
+      #cover-story-{{ section.id }} .cs-category img {
+        min-height: 420px;
+      }
+
+      #cover-story-{{ section.id }} .cs-product-row {
+        grid-auto-columns: minmax(210px, 76vw);
+      }
+
+      #cover-story-{{ section.id }} .cs-quick-add {
+        opacity: 1;
+        transform: none;
+      }
+
+      #cover-story-{{ section.id }} .cs-editorial-inner,
+      #cover-story-{{ section.id }} .cs-about-inner {
+        grid-template-columns: 1fr;
+        gap: 35px;
+        padding: 70px 18px;
+      }
+
+      #cover-story-{{ section.id }} .cs-mini-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      #cover-story-{{ section.id }} .cs-trust {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      #cover-story-{{ section.id }} .cs-trust-item {
+        border-bottom: 1px solid var(--cs-border);
+      }
+
+      #cover-story-{{ section.id }} .cs-store-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #cover-story-{{ section.id }} .cs-newsletter {
+        padding: 75px 18px;
+      }
+
+      #cover-story-{{ section.id }} .cs-footer-inner {
+        padding: 60px 18px 25px;
+      }
+
+      #cover-story-{{ section.id }} .cs-footer-top {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding-bottom: 40px;
+      }
+
+      #cover-story-{{ section.id }} .cs-footer-bottom {
+        flex-direction: column;
+        gap: 8px;
+      }
+    }
+  </style>
+
+  <!-- =========================================================
+       HEADER
+  ========================================================= -->
+
+  <header class="cs-header" id="cs-header-{{ section.id }}">
+
+    <div class="cs-header-inner">
+
+      <button
+        type="button"
+        class="cs-mobile-toggle"
+        aria-label="Open menu"
+        data-mobile-toggle
+      >
+        <span></span>
+      </button>
+
+      <nav class="cs-nav">
+
+        {% if nav_menu != blank %}
+
+          {% for link in nav_menu.links %}
+
+            <div class="cs-nav-item">
+
+              <a href="{{ link.url }}" class="cs-nav-link">
+                {{ link.title }}
+
+                {% if link.links != blank %}
+                  <span class="cs-nav-chevron"></span>
+                {% endif %}
+              </a>
+
+              {% if link.links != blank %}
+
+                <div class="cs-mega">
+                  <div class="cs-mega-grid">
+
+                    {% for child in link.links %}
+
+                      <a href="{{ child.url }}">
+                        {{ child.title }}
+                      </a>
+
+                    {% endfor %}
+
+                  </div>
+                </div>
+
+              {% endif %}
+
+            </div>
+
+          {% endfor %}
+
+        {% else %}
+
+          <div class="cs-nav-item">
+            <a href="/collections/phone-cases" class="cs-nav-link">
+              CASES
+              <span class="cs-nav-chevron"></span>
+            </a>
+
+            <div class="cs-mega">
+              <div class="cs-mega-grid">
+                <a href="/collections/phone-cases">Phone Cases</a>
+                <a href="/collections/macbook-cases">MacBook Cases</a>
+                <a href="/collections/ipad-cases">iPad Cases</a>
+                <a href="/collections/airpods-cases">AirPod Cases</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-nav-item">
+            <a href="/collections/screen-protectors" class="cs-nav-link">
+              SHIELD
+            </a>
+          </div>
+
+          <div class="cs-nav-item">
+            <a href="/collections/watch-bands" class="cs-nav-link">
+              WEAR
+              <span class="cs-nav-chevron"></span>
+            </a>
+
+            <div class="cs-mega">
+              <div class="cs-mega-grid">
+                <a href="/collections/watch-bands">Watch Bands</a>
+                <a href="/collections/whoop-bands">Whoop Bands</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-nav-item">
+            <a href="/collections/tech" class="cs-nav-link">
+              TECH
+              <span class="cs-nav-chevron"></span>
+            </a>
+
+            <div class="cs-mega">
+              <div class="cs-mega-grid">
+                <a href="/collections/power-banks">Power Banks</a>
+                <a href="/collections/ipad-pencil">iPad Pencil</a>
+                <a href="/collections/fitness-bands">Fitness Bands</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-nav-item">
+            <a href="/collections/essentials" class="cs-nav-link">
+              ESSENTIALS
+              <span class="cs-nav-chevron"></span>
+            </a>
+
+            <div class="cs-mega">
+              <div class="cs-mega-grid">
+                <a href="/collections/bags">Bags</a>
+                <a href="/collections/sleeves">Sleeves</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-nav-item">
+            <a href="/collections/new-arrivals" class="cs-nav-link">
+              NEW
+            </a>
+          </div>
+
+          <div class="cs-nav-item">
+            <a href="/pages/about-us" class="cs-nav-link">
+              ABOUT US
+            </a>
+          </div>
+
+        {% endif %}
+
+      </nav>
+
+      <a href="{{ routes.root_url }}" class="cs-logo">
+
+        {% if settings.logo != blank %}
+
+          <img
+            src="{{ settings.logo | image_url: width: 500 }}"
+            alt="{{ shop.name | escape }}"
+            loading="eager"
+          >
+
+        {% else %}
+
+          <span class="cs-logo-text">
+            COVER STORY
+          </span>
+
+        {% endif %}
+
+      </a>
+
+      <div class="cs-header-actions">
+
+        <button
+          type="button"
+          class="cs-icon-button cs-search-button"
+          data-search-button
+          aria-label="Search"
+        >
+          <svg class="cs-icon" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="6.5"></circle>
+            <path d="M16 16l5 5"></path>
+          </svg>
+        </button>
+
+        <a
+          href="{{ routes.account_url }}"
+          class="cs-icon-button"
+          aria-label="Account"
+        >
+          <svg class="cs-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="3.5"></circle>
+            <path d="M5 20c.9-3.5 3.1-5.2 7-5.2s6.1 1.7 7 5.2"></path>
+          </svg>
+        </a>
+
+        <button
+          type="button"
+          class="cs-icon-button"
+          data-cart-button
+          aria-label="Cart"
+        >
+          <svg class="cs-icon" viewBox="0 0 24 24">
+            <path d="M4 8h16l-1 11H5L4 8z"></path>
+            <path d="M8 8a4 4 0 0 1 8 0"></path>
+          </svg>
+
+          <span
+            class="cs-cart-count"
+            id="cs-cart-count-{{ section.id }}"
+          >
+            {{ cart.item_count }}
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- =========================================================
+       MOBILE MENU
+  ========================================================= -->
+
+  <div class="cs-mobile-menu" data-mobile-menu>
+
+    <div class="cs-mobile-menu-list">
+
+      <a href="/collections/phone-cases">CASES</a>
+      <a href="/collections/screen-protectors">SHIELD</a>
+      <a href="/collections/watch-bands">WEAR</a>
+      <a href="/collections/tech">TECH</a>
+      <a href="/collections/essentials">ESSENTIALS</a>
+      <a href="/collections/new-arrivals">NEW</a>
+      <a href="/pages/about-us">ABOUT US</a>
+
+      <a href="{{ routes.search_url }}">SEARCH</a>
+      <a href="{{ routes.account_url }}">ACCOUNT</a>
+
+    </div>
+
+  </div>
+
+  <!-- =========================================================
+       HERO
+  ========================================================= -->
+
+  <section class="cs-hero">
+
+    <div class="cs-hero-media">
+
+      {% if hero_image != blank %}
+
+        <picture>
+
+          {% if hero_mobile_image != blank %}
+            <source
+              media="(max-width: 749px)"
+              srcset="{{ hero_mobile_image | image_url: width: 1200 }}"
+            >
+          {% endif %}
+
+          <img
+            src="{{ hero_image | image_url: width: 2400 }}"
+            alt="{{ section.settings.hero_heading | escape }}"
+            loading="eager"
+          >
+
+        </picture>
+
+      {% else %}
+
+        <div
+          style="
+            position:absolute;
+            inset:0;
+            background:
+              radial-gradient(circle at 20% 20%, #777 0, transparent 30%),
+              linear-gradient(135deg,#090909,#3b3b3b);
+          "
+        ></div>
+
+      {% endif %}
+
+      <div class="cs-hero-overlay"></div>
+
+    </div>
+
+    <div class="cs-hero-content cs-reveal">
+
+      {% if section.settings.hero_eyebrow != blank %}
+        <div class="cs-eyebrow">
+          {{ section.settings.hero_eyebrow }}
+        </div>
+      {% endif %}
+
+      <h1 class="cs-hero-title">
+        {{ section.settings.hero_heading }}
+      </h1>
+
+      {% if section.settings.hero_text != blank %}
+        <p class="cs-hero-text">
+          {{ section.settings.hero_text }}
+        </p>
+      {% endif %}
+
+      <div class="cs-hero-actions">
+
+        {% if section.settings.hero_button_label != blank %}
+
+          <a
+            href="{{ section.settings.hero_button_link | default: '/collections/new-arrivals' }}"
+            class="cs-button"
+          >
+            {{ section.settings.hero_button_label }}
+          </a>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+    <div class="cs-scroll-indicator">
+      <span>Scroll</span>
+      <span class="cs-scroll-line"></span>
+    </div>
+
+  </section>
+
+  <!-- =========================================================
+       MARQUEE
+  ========================================================= -->
+
+  <div class="cs-marquee">
+
+    <div class="cs-marquee-track">
+
+      {% for i in (1..2) %}
+
+        <div class="cs-marquee-item">
+          COVER YOUR WORLD
+          <span class="cs-marquee-dot">•</span>
+          YOUR COVER. YOUR STORY.
+          <span class="cs-marquee-dot">•</span>
+          QUALITY • STYLE • PROTECTION
+          <span class="cs-marquee-dot">•</span>
+          COVER STORY
+          <span class="cs-marquee-dot">•</span>
+        </div>
+
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+  <!-- =========================================================
+       TRUST
+  ========================================================= -->
+
+  <div class="cs-trust">
+
+    <div class="cs-trust-item">
+      <p class="cs-trust-title">Trusted Since 2007</p>
+      <p class="cs-trust-text">Years of retail experience</p>
+    </div>
+
+    <div class="cs-trust-item">
+      <p class="cs-trust-title">Secure Payments</p>
+      <p class="cs-trust-text">Safe and encrypted checkout</p>
+    </div>
+
+    <div class="cs-trust-item">
+      <p class="cs-trust-title">Quality Products</p>
+      <p class="cs-trust-text">Thoughtfully selected accessories</p>
+    </div>
+
+    <div class="cs-trust-item">
+      <p class="cs-trust-title">Surat Stores</p>
+      <p class="cs-trust-text">Offline support available</p>
+    </div>
+
+  </div>
+
+  <!-- =========================================================
+       CATEGORIES
+  ========================================================= -->
+
+  <section class="cs-section">
+
+    <div class="cs-section-header cs-reveal">
+
+      <div>
+        <div class="cs-section-kicker">
+          Explore
+        </div>
+
+        <h2 class="cs-section-title">
+          Shop By Category
+        </h2>
+      </div>
+
+      <a
+        href="/collections"
+        class="cs-section-link"
+      >
+        View All
+      </a>
+
+    </div>
+
+    <div class="cs-category-grid">
+
+      {% for block in section.blocks %}
+
+        {% if block.type == 'category' %}
+
+          <a
+            href="{{ block.settings.url | default: '/collections' }}"
+            class="cs-category cs-reveal"
+            {{ block.shopify_attributes }}
+          >
+
+            {% if block.settings.image != blank %}
+
+              <img
+                src="{{ block.settings.image | image_url: width: 1200 }}"
+                alt="{{ block.settings.title | escape }}"
+                loading="lazy"
+              >
+
+            {% else %}
+
+              <div
+                style="
+                  width:100%;
+                  height:100%;
+                  min-height:540px;
+                  background:linear-gradient(135deg,#dedede,#999);
+                "
+              ></div>
+
+            {% endif %}
+
+            <div class="cs-category-overlay"></div>
+
+            <div class="cs-category-content">
+
+              <h3 class="cs-category-label">
+                {{ block.settings.title }}
+              </h3>
+
+              {% if block.settings.subtitle != blank %}
+                <p class="cs-category-sub">
+                  {{ block.settings.subtitle }}
+                </p>
+              {% endif %}
+
+              <span class="cs-category-link">
+                Shop Now
+              </span>
+
+            </div>
+
+          </a>
+
+        {% endif %}
+
+      {% endfor %}
+
+    </div>
+
+  </section>
+
+
+  
+
+  <!-- =========================================================
+       EDITORIAL
+  ========================================================= -->
+
+  <section class="cs-editorial">
+
+    <div class="cs-editorial-inner">
+
+      <div class="cs-editorial-image cs-reveal">
+
+        {% if section.settings.editorial_image != blank %}
+
+          <img
+            src="{{ section.settings.editorial_image | image_url: width: 1400 }}"
+            alt="{{ section.settings.editorial_heading | escape }}"
+            loading="lazy"
+          >
+
+        {% else %}
+
+          <div
+            style="
+              width:100%;
+              height:100%;
+              background:linear-gradient(135deg,#4a4a4a,#111);
+            "
+          ></div>
+
+        {% endif %}
+
+      </div>
+
+      <div class="cs-editorial-copy cs-reveal">
+
+        <div class="cs-eyebrow">
+          COVER STORY
+        </div>
+
+        <h2>
+          Accessories that tell your story.
+        </h2>
+
+        <p>
+          From everyday protection to statement-making essentials,
+          COVER STORY brings together thoughtfully selected accessories
+          designed around style, function and everyday life.
+        </p>
+
+        <a
+          href="/collections"
+          class="cs-button"
+        >
+          Explore Everything
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  
+
+  <!-- =========================================================
+       STORES
+  ========================================================= -->
+
+  <section class="cs-section">
+
+    <div class="cs-section-header cs-reveal">
+
+      <div>
+
+        <div class="cs-section-kicker">
+          Visit Us
+        </div>
+
+        <h2 class="cs-section-title">
+          Stores Across Surat
+        </h2>
+
+      </div>
+
+    </div>
+
+    <div class="cs-store-grid">
+
+      {% for block in section.blocks %}
+
+        {% if block.type == 'store' %}
+
+          <div class="cs-store cs-reveal" {{ block.shopify_attributes }}>
+
+            <div class="cs-store-image">
+
+              {% if block.settings.image != blank %}
+
+                <img
+                  src="{{ block.settings.image | image_url: width: 1200 }}"
+                  alt="{{ block.settings.name | escape }}"
+                  loading="lazy"
+                >
+
+              {% else %}
+
+                <div
+                  style="
+                    width:100%;
+                    height:100%;
+                    background:linear-gradient(135deg,#ddd,#aaa);
+                  "
+                ></div>
+
+              {% endif %}
+
+            </div>
+
+            <div class="cs-store-content">
+
+              <h3 class="cs-store-name">
+                {{ block.settings.name }}
+              </h3>
+
+              <p class="cs-store-address">
+                {{ block.settings.address }}
+              </p>
+
+              {% if block.settings.map_link != blank %}
+
+                <a
+                  href="{{ block.settings.map_link }}"
+                  target="_blank"
+                  rel="noopener"
+                  class="cs-store-link"
+                >
+                  Get Directions
+                </a>
+
+              {% endif %}
+
+            </div>
+
+          </div>
+
+        {% endif %}
+
+      {% endfor %}
+
+    </div>
+
+  </section>
+
+  <!-- =========================================================
+       ABOUT
+  ========================================================= -->
+
+  <section class="cs-about">
+
+    <div class="cs-about-inner">
+
+      <div class="cs-about-image cs-reveal">
+
+        {% if section.settings.about_image != blank %}
+
+          <img
+            src="{{ section.settings.about_image | image_url: width: 1400 }}"
+            alt="COVER STORY"
+            loading="lazy"
+          >
+
+        {% else %}
+
+          <div
+            style="
+              width:100%;
+              height:100%;
+              background:linear-gradient(135deg,#e3e3df,#b7b7b3);
+            "
+          ></div>
+
+        {% endif %}
+
+      </div>
+
+      <div class="cs-about-copy cs-reveal">
+
+        <div class="cs-section-kicker">
+          Our Story
+        </div>
+
+        <h2>
+          Built on trust.<br>
+          Designed for you.
+        </h2>
+
+        <p>
+          Our journey began in 2007, with a simple goal — to provide
+          quality mobile accessories backed by honest service and genuine
+          customer relationships.
+        </p>
+
+        <p>
+          Over the years, that small beginning has grown into four
+          successful stores across Surat, serving thousands of customers
+          and earning their trust along the way.
+        </p>
+
+        <p>
+          Today, we’re taking the next step with COVER STORY — bringing
+          our experience into a new, modern online destination for
+          thoughtfully selected accessories that combine style, protection
+          and everyday tech essentials.
+        </p>
+
+        <p>
+          We believe accessories should be more than just functional.
+          They should reflect your style, personality and everyday needs.
+        </p>
+
+        <p>
+          With years of experience behind us, we’re committed to bringing
+          you quality products, reliable service and a shopping experience
+          you can trust.
+        </p>
+
+        <div class="cs-about-signature">
+          Your Cover. Your Story.
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- =========================================================
+       NEWSLETTER
+  ========================================================= -->
+
+  <section class="cs-newsletter cs-reveal">
+
+    <div class="cs-section-kicker">
+      Stay Connected
+    </div>
+
+    <h2>
+      Be part of the story.
+    </h2>
+
+    <p>
+      Get first access to new arrivals, launches and special offers.
+    </p>
+
+    {% form 'customer', class: 'cs-newsletter-form' %}
+
+      <input
+        type="email"
+        name="contact[email]"
+        placeholder="Enter your email"
+        aria-label="Email address"
+        required
+      >
+
+      <input
+        type="hidden"
+        name="contact[tags]"
+        value="newsletter"
+      >
+
+      <button type="submit">
+        Subscribe
+      </button>
+
+    {% endform %}
+
+  </section>
+
+  <!-- =========================================================
+       FOOTER
+  ========================================================= -->
+
+  <footer class="cs-footer">
+
+    <div class="cs-footer-inner">
+
+      <div class="cs-footer-top">
+
+        <div>
+
+          <div class="cs-footer-logo">
+            COVER STORY
+          </div>
+
+          <p class="cs-footer-text">
+            Accessories that combine style, protection and everyday
+            technology — backed by experience you can trust.
+          </p>
+
+        </div>
+
+        <div>
+
+          <p class="cs-footer-heading">
+            Shop
+          </p>
+
+          <div class="cs-footer-links">
+            <a href="/collections/new-arrivals">New Arrivals</a>
+            <a href="/collections/phone-cases">Phone Cases</a>
+            <a href="/collections/screen-protectors">Screen Protectors</a>
+            <a href="/collections/watch-bands">Watch Bands</a>
+            <a href="/collections/tech">Tech</a>
+          </div>
+
+        </div>
+
+        <div>
+
+          <p class="cs-footer-heading">
+            Information
+          </p>
+
+          <div class="cs-footer-links">
+            <a href="/pages/about-us">About Us</a>
+            <a href="/pages/contact">Contact</a>
+            <a href="/pages/shipping-policy">Shipping</a>
+            <a href="/pages/refund-policy">Returns</a>
+            <a href="/pages/privacy-policy">Privacy</a>
+          </div>
+
+        </div>
+
+        <div>
+
+          <p class="cs-footer-heading">
+            Account
+          </p>
+
+          <div class="cs-footer-links">
+            <a href="{{ routes.account_url }}">My Account</a>
+            <a href="{{ routes.cart_url }}">Cart</a>
+            <a href="{{ routes.search_url }}">Search</a>
+            <a href="/pages/contact">Support</a>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="cs-footer-bottom">
+
+        <span>
+          © {{ 'now' | date: '%Y' }} COVER STORY
+        </span>
+
+        <span>
+          YOUR COVER. YOUR STORY.
+        </span>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+  <!-- =========================================================
+       CART DRAWER
+  ========================================================= -->
+
+  <div
+    class="cs-cart-overlay"
+    data-cart-overlay
+  ></div>
+
+  <aside
+    class="cs-cart-drawer"
+    data-cart-drawer
+    aria-label="Shopping cart"
+  >
+
+    <div class="cs-cart-head">
+
+      <h3>
+        Your Cart
+      </h3>
+
+      <button
+        type="button"
+        class="cs-cart-close"
+        data-cart-close
+        aria-label="Close cart"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div
+      class="cs-cart-body"
+      data-cart-body
+    >
+      <p style="font-size:12px;color:#777;">
+        Your cart is empty.
+      </p>
+    </div>
+
+    <div class="cs-cart-footer">
+
+      <div class="cs-cart-total">
+
+        <span>
+          Subtotal
+        </span>
+
+        <span data-cart-total>
+          ₹0
+        </span>
+
+      </div>
+
+      <a
+        href="{{ routes.cart_url }}"
+        class="cs-cart-checkout"
+      >
+        View Cart / Checkout
+      </a>
+
+    </div>
+
+  </aside>
+
+  <!-- =========================================================
+       TOAST
+  ========================================================= -->
+
+  <div
+    class="cs-toast"
+    data-toast
+  >
+    Added to cart
+  </div>
+
+  <script>
+    (() => {
+
+      const root = document.querySelector('#cover-story-{{ section.id }}');
+
+      if (!root) return;
+
+      const header = root.querySelector('#cs-header-{{ section.id }}');
+      const mobileToggle = root.querySelector('[data-mobile-toggle]');
+      const mobileMenu = root.querySelector('[data-mobile-menu]');
+
+      const cartButton = root.querySelector('[data-cart-button]');
+      const cartDrawer = root.querySelector('[data-cart-drawer]');
+      const cartOverlay = root.querySelector('[data-cart-overlay]');
+      const cartClose = root.querySelector('[data-cart-close]');
+      const cartBody = root.querySelector('[data-cart-body]');
+      const cartTotal = root.querySelector('[data-cart-total]');
+      const cartCount = root.querySelector('#cs-cart-count-{{ section.id }}');
+      const toast = root.querySelector('[data-toast]');
+
+      /* =======================================================
+         HEADER SCROLL
+      ======================================================= */
+
+      const updateHeader = () => {
+
+        if (window.scrollY > 25) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+
+      };
+
+      window.addEventListener('scroll', updateHeader, { passive: true });
+
+      updateHeader();
+
+      /* =======================================================
+         MOBILE MENU
+      ======================================================= */
+
+      if (mobileToggle && mobileMenu) {
+
+        mobileToggle.addEventListener('click', () => {
+
+          mobileMenu.classList.toggle('open');
+
+          document.body.style.overflow =
+            mobileMenu.classList.contains('open')
+              ? 'hidden'
+              : '';
+
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+
+          link.addEventListener('click', () => {
+
+            mobileMenu.classList.remove('open');
+
+            document.body.style.overflow = '';
+
+          });
+
+        });
+
+      }
+
+      /* =======================================================
+         SCROLL REVEAL
+      ======================================================= */
+
+      const revealItems = root.querySelectorAll('.cs-reveal');
+
+      const revealObserver = new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+
+              entry.target.classList.add('visible');
+
+              revealObserver.unobserve(entry.target);
+
+            }
+
+          });
+
+        },
+        {
+          threshold: 0.08,
+          rootMargin: '0px 0px -50px 0px'
+        }
+      );
+
+      revealItems.forEach(item => {
+        revealObserver.observe(item);
+      });
+
+      /* =======================================================
+         CART
+      ======================================================= */
+
+      const openCart = async () => {
+
+        cartDrawer.classList.add('open');
+        cartOverlay.classList.add('open');
+
+        document.body.style.overflow = 'hidden';
+
+        await renderCart();
+
+      };
+
+      const closeCart = () => {
+
+        cartDrawer.classList.remove('open');
+        cartOverlay.classList.remove('open');
+
+        document.body.style.overflow = '';
+
+      };
+
+      if (cartButton) {
+        cartButton.addEventListener('click', openCart);
+      }
+
+      if (cartClose) {
+        cartClose.addEventListener('click', closeCart);
+      }
+
+      if (cartOverlay) {
+        cartOverlay.addEventListener('click', closeCart);
+      }
+
+      /* =======================================================
+         RENDER CART
+      ======================================================= */
+
+      async function renderCart() {
+
+        try {
+
+          const response = await fetch('/cart.js');
+
+          const cart = await response.json();
+
+          if (cartCount) {
+            cartCount.textContent = cart.item_count;
+          }
+
+          cartTotal.textContent = formatMoney(cart.total_price);
+
+          if (!cart.items.length) {
+
+            cartBody.innerHTML = `
+              <p style="font-size:12px;color:#777;">
+                Your cart is empty.
+              </p>
+            `;
+
+            return;
+
+          }
+
+          cartBody.innerHTML = cart.items.map(item => {
+
+            return `
+              <div class="cs-cart-item">
+
+                <img
+                  src="${item.image || ''}"
+                  alt="${item.product_title || ''}"
+                >
+
+                <div>
+
+                  <p class="cs-cart-item-name">
+                    ${item.product_title}
+                  </p>
+
+                  <div class="cs-cart-item-meta">
+                    Qty: ${item.quantity}
+                  </div>
+
+                  <div class="cs-cart-item-meta">
+                    ${formatMoney(item.final_line_price)}
+                  </div>
+
+                </div>
+
+              </div>
+            `;
+
+          }).join('');
+
+        } catch (error) {
+
+          console.error(error);
+
+        }
+
+      }
+
+      function formatMoney(cents) {
+
+        return '₹' + (cents / 100).toLocaleString('en-IN', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0
+        });
+
+      }
+
+      /* =======================================================
+         QUICK ADD
+      ======================================================= */
+
+      root.querySelectorAll('.cs-add-form').forEach(form => {
+
+        form.addEventListener('submit', async event => {
+
+          event.preventDefault();
+
+          const button = form.querySelector('button');
+
+          if (button) {
+            button.disabled = true;
+            button.textContent = 'Adding...';
+          }
+
+          try {
+
+            const response = await fetch('{{ routes.cart_add_url }}.js', {
+
+              method: 'POST',
+
+              headers: {
+                'Accept': 'application/json'
+              },
+
+              body: new FormData(form)
+
+            });
+
+            if (!response.ok) {
+              throw new Error('Add to cart failed');
+            }
+
+            if (button) {
+              button.textContent = 'Added';
+            }
+
+            showToast('Added to cart');
+
+            await renderCart();
+
+            setTimeout(() => {
+
+              if (button) {
+                button.disabled = false;
+                button.textContent = 'Quick Add';
+              }
+
+            }, 1200);
+
+            openCart();
+
+          } catch (error) {
+
+            console.error(error);
+
+            if (button) {
+              button.disabled = false;
+              button.textContent = 'Try Again';
+            }
+
+            showToast('Unable to add product');
+
+          }
+
+        });
+
+      });
+
+      /* =======================================================
+         SEARCH
+      ======================================================= */
+
+      const searchButton = root.querySelector('[data-search-button]');
+
+      if (searchButton) {
+
+        searchButton.addEventListener('click', () => {
+
+          window.location.href = '{{ routes.search_url }}';
+
+        });
+
+      }
+
+      /* =======================================================
+         TOAST
+      ======================================================= */
+
+      let toastTimer;
+
+      function showToast(message) {
+
+        if (!toast) return;
+
+        toast.textContent = message;
+
+        toast.classList.add('show');
+
+        clearTimeout(toastTimer);
+
+        toastTimer = setTimeout(() => {
+
+          toast.classList.remove('show');
+
+        }, 2200);
+
+      }
+
+    })();
+  </script>
+
+</section>
+
+{% schema %}
+
+{
+  "name": "COVER STORY Home",
+  "tag": "section",
+  "class": "cover-story-home-section",
+
+  "settings": [
+
+    {
+      "type": "link_list",
+      "id": "nav_menu",
+      "label": "Desktop navigation menu"
+    },
+
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "hero_mobile_image",
+      "label": "Mobile hero image"
+    },
+
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Hero eyebrow",
+      "default": "COVER STORY"
+    },
+
+    {
+      "type": "text",
+      "id": "hero_heading",
+      "label": "Hero heading",
+      "default": "YOUR COVER. YOUR STORY."
+    },
+
+    {
+      "type": "textarea",
+      "id": "hero_text",
+      "label": "Hero text",
+      "default": "Thoughtfully selected accessories that combine style, protection and everyday tech."
+    },
+
+    {
+      "type": "text",
+      "id": "hero_button_label",
+      "label": "Hero button",
+      "default": "Shop New Arrivals"
+    },
+
+    {
+      "type": "url",
+      "id": "hero_button_link",
+      "label": "Hero button link"
+    },
+
+    {
+      "type": "header",
+      "content": "New arrivals"
+    },
+
+    {
+      "type": "collection",
+      "id": "new_collection",
+      "label": "New arrivals collection"
+    },
+
+    {
+      "type": "text",
+      "id": "new_title",
+      "label": "New arrivals title",
+      "default": "New Arrivals"
+    },
+
+    {
+      "type": "header",
+      "content": "Cases"
+    },
+
+    {
+      "type": "collection",
+      "id": "cases_collection",
+      "label": "Cases collection"
+    },
+
+    {
+      "type": "text",
+      "id": "cases_title",
+      "label": "Cases title",
+      "default": "Cases"
+    },
+
+    {
+      "type": "text",
+      "id": "cases_kicker",
+      "label": "Cases kicker",
+      "default": "Protect Your Device"
+    },
+
+    {
+      "type": "header",
+      "content": "Shield"
+    },
+
+    {
+      "type": "collection",
+      "id": "shield_collection",
+      "label": "Shield collection"
+    },
+
+    {
+      "type": "text",
+      "id": "shield_title",
+      "label": "Shield title",
+      "default": "Shield"
+    },
+
+    {
+      "type": "text",
+      "id": "shield_kicker",
+      "label": "Shield kicker",
+      "default": "Everyday Protection"
+    },
+
+    {
+      "type": "header",
+      "content": "Wear"
+    },
+
+    {
+      "type": "collection",
+      "id": "wear_collection",
+      "label": "Wear collection"
+    },
+
+    {
+      "type": "text",
+      "id": "wear_title",
+      "label": "Wear title",
+      "default": "Wear"
+    },
+
+    {
+      "type": "text",
+      "id": "wear_kicker",
+      "label": "Wear kicker",
+      "default": "Wear It Your Way"
+    },
+
+    {
+      "type": "header",
+      "content": "Tech"
+    },
+
+    {
+      "type": "collection",
+      "id": "tech_collection",
+      "label": "Tech collection"
+    },
+
+    {
+      "type": "text",
+      "id": "tech_title",
+      "label": "Tech title",
+      "default": "Tech"
+    },
+
+    {
+      "type": "text",
+      "id": "tech_kicker",
+      "label": "Tech kicker",
+      "default": "Power Your Everyday"
+    },
+
+    {
+      "type": "header",
+      "content": "Editorial"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "editorial_image",
+      "label": "Editorial image"
+    },
+
+    {
+      "type": "text",
+      "id": "editorial_heading",
+      "label": "Editorial heading",
+      "default": "Accessories that tell your story."
+    },
+
+    {
+      "type": "header",
+      "content": "Essentials"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "bags_image",
+      "label": "Bags image"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "sleeves_image",
+      "label": "Sleeves image"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "powerbank_image",
+      "label": "Power bank image"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "watch_image",
+      "label": "Watch band image"
+    },
+
+    {
+      "type": "header",
+      "content": "About"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "about_image",
+      "label": "About image"
+    }
+
+  ],
+
+  "blocks": [
+
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "CASES"
+        },
+
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Protection with personality"
+        },
+
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        }
+
+      ]
+    },
+
+    {
+      "type": "store",
+      "name": "Store",
+      "settings": [
+
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Store image"
+        },
+
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Store name",
+          "default": "COVER STORY"
+        },
+
+        {
+          "type": "textarea",
+          "id": "address",
+          "label": "Address"
+        },
+
+        {
+          "type": "url",
+          "id": "map_link",
+          "label": "Google Maps link"
+        }
+
+      ]
+    }
+
+  ],
+
+  "presets": [
+
+    {
+      "name": "COVER STORY Home",
+
+      "blocks": [
+
+        {
+          "type": "category",
+          "settings": {
+            "title": "CASES",
+            "subtitle": "Protection with personality",
+            "url": "/collections/phone-cases"
+          }
+        },
+
+        {
+          "type": "category",
+          "settings": {
+            "title": "SHIELD",
+            "subtitle": "Everyday protection",
+            "url": "/collections/screen-protectors"
+          }
+        },
+
+        {
+          "type": "category",
+          "settings": {
+            "title": "WEAR",
+            "subtitle": "Accessories for your everyday",
+            "url": "/collections/watch-bands"
+          }
+        },
+
+        {
+          "type": "category",
+          "settings": {
+            "title": "TECH",
+            "subtitle": "Power your world",
+            "url": "/collections/tech"
+          }
+        },
+
+        {
+          "type": "category",
+          "settings": {
+            "title": "ESSENTIALS",
+            "subtitle": "Carry it everywhere",
+            "url": "/collections/essentials"
+          }
+        },
+
+        {
+          "type": "category",
+          "settings": {
+            "title": "NEW",
+            "subtitle": "Latest arrivals",
+            "url": "/collections/new-arrivals"
+          }
+        },
+
+        {
+          "type": "store",
+          "settings": {
+            "name": "COVER STORY STORE 01",
+            "address": "Surat, Gujarat"
+          }
+        },
+
+        {
+          "type": "store",
+          "settings": {
+            "name": "COVER STORY STORE 02",
+            "address": "Surat, Gujarat"
+          }
+        },
+
+        {
+          "type": "store",
+          "settings": {
+            "name": "COVER STORY STORE 03",
+            "address": "Surat, Gujarat"
+          }
+        }
+
+      ]
+
+    }
+
+  ]
+
+}
+
+{% endschema %}
