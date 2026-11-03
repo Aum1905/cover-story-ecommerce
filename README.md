@@ -30,21 +30,7 @@ The storefront features customized branding, organized product categories, intui
 - CSS3
 - JavaScript
 
-## 📂 Project Structure
 
-The project documentation and screenshots are organized as follows:
-
-```text
-cover-story-ecommerce/
-│
-├── README.md
-│
-└── screenshots/
-    ├── homepage.png
-    ├── collections.png
-    ├── product-page.png
-    └── mobile-view.png
-```
 
 ## 🎯 Project Objective
 
